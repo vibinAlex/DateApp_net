@@ -4,7 +4,10 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
+using AutoMapper.Internal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,20 +21,38 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExist(registerDto.UserName)) return BadRequest("User Taken!");
-            using var hmac = new HMACSHA512();
-            var user = new AppUser
-            {
-                UserName = registerDto.UserName.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
-            };
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
-            return new UserDto
-            {
-                Username = user.UserName,
-                Token = tokenService.CreateToken(user)
-            };//user;
+            return Ok();
+            //var member = new MemberDto();
+            //using var hmac = new HMACSHA512();
+            // var user = new AppUser
+            // {
+            //     UserName = registerDto.UserName.ToLower(),
+            //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+            //     PasswordSalt = hmac.Key,
+            //     KnownAs = member.knownAs!,
+            //     Gender = member.Gender!,
+            //     City = member.City!,
+            //     Country = member.Country!
+            // };
+            // var user = new AppUser
+            // {
+            //     UserName = registerDto.UserName.ToLower(),
+            //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+            //     PasswordSalt = hmac.Key,
+            //     KnownAs = member.knownAs!,
+            //     Gender = member.Gender!,
+            //     City = member.City!,
+            //     Country = member.Country!
+            // };
+
+            // context.Users.Add(user);
+            // await context.SaveChangesAsync();
+            // return new UserDto
+            // {
+            //     Username = user.UserName,
+            //     Token = tokenService.CreateToken(user)
+            // };
+
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
