@@ -18,7 +18,9 @@ public static class ApplicationServiceExtensions
         //.AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
         services.AddDbContext<DataContext>(opt =>
         {
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            //opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+
         });
         services.AddCors();
         services.AddScoped<ITokenService, TokenService>();
